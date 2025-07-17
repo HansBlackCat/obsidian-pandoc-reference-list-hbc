@@ -1,5 +1,9 @@
 ## Obsidian Pandoc Reference List
 
+Forked from [mgmeyers/obsidian-pandoc-reference-list](https://github.com/mgmeyers/obsidian-pandoc-reference-list)
+
+Under `GPL-3.0 license`
+
 Displays a formatted reference in the sidebar for each pandoc citekey present in the current document.
 
 Set up instructions:

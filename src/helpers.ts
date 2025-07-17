@@ -2,8 +2,14 @@ import { FileSystemAdapter, htmlToMarkdown } from 'obsidian';
 import { shellPath } from 'shell-path';
 
 export function getVaultRoot() {
+  let adapter = app.vault.adapter;
+  if (adapter instanceof FileSystemAdapter) {
+      return adapter.getBasePath();
+  }
+  return null;
+
   // This is a desktop only plugin, so assume adapter is FileSystemAdapter
-  return (app.vault.adapter as FileSystemAdapter).getBasePath();
+  // return (app.vault.adapter as FileSystemAdapter).getBasePath();
 }
 
 export function copyElToClipboard(el: HTMLElement) {
