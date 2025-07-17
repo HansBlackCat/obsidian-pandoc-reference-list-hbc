@@ -16,6 +16,7 @@ import {
 import { cslListRaw } from './bib/cslList';
 import { langListRaw } from './bib/cslLangList';
 import { ZoteroPullSetting } from './settings/ZoteroPullSetting';
+import { getVaultRoot } from './helpers';
 
 export const DEFAULT_SETTINGS: ReferenceListSettings = {
   pathToPandoc: '',
@@ -65,6 +66,20 @@ export class ReferenceListSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
 
     containerEl.empty();
+
+    new Setting(containerEl)
+      .setName(t('Current vault root'))
+      .setDesc(
+        t(
+          'The root path of your current vault. This is used to resolve relative paths in your bibliography and CSL files.'
+        )
+      )
+      .then((setting) => {
+        setting.addText((text) => {
+            text.setValue(getVaultRoot());
+          text.setDisabled(true);
+        });
+      })
 
     new Setting(containerEl)
       .setName(t('Fallback path to Pandoc'))

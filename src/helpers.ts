@@ -2,7 +2,7 @@ import { FileSystemAdapter, htmlToMarkdown } from 'obsidian';
 import { shellPath } from 'shell-path';
 
 export function getVaultRoot() {
-  let adapter = app.vault.adapter;
+  const adapter = app.vault.adapter;
   if (adapter instanceof FileSystemAdapter) {
       return adapter.getBasePath();
   }

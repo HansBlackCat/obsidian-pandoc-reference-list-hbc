@@ -21,6 +21,7 @@ import testYAMLCSL from './test.yaml.json';
 // @ts-ignore
 // import library from './My Library.json';
 import { existsSync, rmSync } from 'fs';
+import { getVaultRoot } from 'src/helpers';
 
 describe('bibToCSL()', () => {
   it('returns json from json', async () => {
@@ -84,7 +85,8 @@ describe('getStyle()', () => {
     const style = await getCSLStyle(
       cache,
       __dirname,
-      'https://www.zotero.org/styles/australian-guide-to-legal-citation-3rd-edition'
+      'https://www.zotero.org/styles/australian-guide-to-legal-citation-3rd-edition',
+      getVaultRoot
     );
     expect(typeof style).toBe('string');
     expect(
@@ -95,7 +97,8 @@ describe('getStyle()', () => {
     await getCSLStyle(
       cache,
       __dirname,
-      'australian-guide-to-legal-citation-3rd-edition'
+      'australian-guide-to-legal-citation-3rd-edition',
+      getVaultRoot
     );
     rmSync(
       path.join(__dirname, 'australian-guide-to-legal-citation-3rd-edition')

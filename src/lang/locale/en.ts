@@ -2,10 +2,11 @@
 
 export default {
   // src/settings.ts
+  'Current vault root': 'Current vault root',
+  'The root path of your current vault. This is used to resolve relative paths in your bibliography and CSL files.':'The root path of your current vault. This is used to resolve relative paths in your bibliography and CSL files.',
   'Path to bibliography file': 'Path to bibliography file',
-  'The absolute path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter.':
-    'The absolute path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter.',
   'Select a bibliography file.': 'Select a bibliography file.',
+  'The absolute path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter.': 'The absolute path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter.',
   'Custom citation style': 'Custom citation style',
   'Citation style': 'Citation style',
   'Citation style language': 'Citation style language',

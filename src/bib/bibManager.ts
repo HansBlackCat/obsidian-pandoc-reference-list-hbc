@@ -546,6 +546,7 @@ export class BibManager {
             this.styleCache,
             this.plugin.cacheDir,
             style.id,
+            getVaultRoot,
             style.explicitPath
           )
         );
