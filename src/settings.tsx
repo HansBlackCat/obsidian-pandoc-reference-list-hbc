@@ -16,7 +16,7 @@ import {
 import { cslListRaw } from './bib/cslList';
 import { langListRaw } from './bib/cslLangList';
 import { ZoteroPullSetting } from './settings/ZoteroPullSetting';
-import { getVaultRoot } from './helpers';
+import { getPandocPath, getVaultRoot } from './helpers';
 
 export const DEFAULT_SETTINGS: ReferenceListSettings = {
   pathToPandoc: '',
@@ -82,58 +82,63 @@ export class ReferenceListSettingsTab extends PluginSettingTab {
       })
 
     new Setting(containerEl)
-      .setName(t('Fallback path to Pandoc'))
+      .setName(t('Pandoc executable path (auto detected)'))
       .setDesc(
         t(
-          "The absolute path to the Pandoc executable. This plugin will attempt to locate pandoc for you and will use this path if it fails to do so. To find pandoc, use the output of 'which pandoc' in a terminal on Mac/Linux or 'Get-Command pandoc' in powershell on Windows."
+          "The absolute path to the Pandoc executable. This plugin will attempt to locate pandoc for you and if it fails to do so, you can manually enter a path in next section."
         )
       )
       .then((setting) => {
-        let input: TextComponent;
         setting.addText((text) => {
-          input = text;
-          text.setValue(this.plugin.settings.pathToPandoc).onChange((value) => {
-            this.plugin.settings.pathToPandoc = value;
+          getPandocPath().then((path) => {
+            text.setValue(path);
+            this.plugin.settings.pathToPandoc = path;
             this.plugin.saveSettings();
           });
+          text.setDisabled(true);          
+        });
         });
 
-        setting.addExtraButton((b) => {
-          b.setIcon('magnifying-glass');
-          b.setTooltip(t('Attempt to find Pandoc automatically'));
-          b.onClick(() => {
-            which('pandoc')
-              .then((pathToPandoc) => {
-                if (pathToPandoc) {
-                  input.setValue(pathToPandoc);
+        // setting.addExtraButton((b) => {
+        //   b.setIcon('magnifying-glass');
+        //   b.setTooltip(t('Attempt to find Pandoc automatically'));
+        //   b.onClick(() => {
+        //     which('pandoc')
+        //       .then((pathToPandoc) => {
+        //         if (pathToPandoc) {
+        //           input.setValue(pathToPandoc);
 
-                  this.plugin.settings.pathToPandoc = pathToPandoc;
-                  this.plugin.saveSettings();
-                } else {
-                  new Notice(
-                    t(
-                      'Unable to find pandoc on your system. If it is installed, please manually enter a path.'
-                    )
-                  );
-                }
-              })
-              .catch((e) => {
-                new Notice(
-                  t(
-                    'Unable to find pandoc on your system. If it is installed, please manually enter a path.'
-                  )
-                );
-                console.error(e);
-              });
-          });
-        });
-      });
+        //           this.plugin.settings.pathToPandoc = pathToPandoc;
+        //           this.plugin.saveSettings();
+        //         } else {
+        //           new Notice(
+        //             t(
+        //               'Unable to find pandoc on your system. If it is installed, please manually enter a path.'
+        //             )
+        //           );
+        //         }
+        //       })
+        //       .catch((e) => {
+        //         new Notice(
+        //           t(
+        //             'Unable to find pandoc on your system. If it is installed, please manually enter a path.'
+        //           )
+        //         );
+        //         console.error(e);
+        //       });
+        //   });
+        // });
+
+    new Setting(containerEl)
+      .setName(t('Fallback path to Pandoc'))
+      .setDesc(t('Fallback path to Pandoc executable.'))
+
 
     new Setting(containerEl)
       .setName(t('Path to bibliography file'))
       .setDesc(
         t(
-          'The absolute path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter.'
+          'The path to your desired bibliography file. This can be overridden on a per-file basis by setting "bibliography" in the file\'s frontmatter. Can be an absolute path or one relative to your vault.'
         )
       )
       .then((setting) => {

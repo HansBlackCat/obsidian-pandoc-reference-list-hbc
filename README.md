@@ -13,3 +13,12 @@ Set up instructions:
 - Run "Pandoc Reference List: Show reference list" from Obsidian command palette to display References tab in the sidebar
 
 <img src="https://raw.githubusercontent.com/mgmeyers/obsidian-pandoc-reference-list/main/Screen%20Shot.png" alt="A screenshot of the plugin's works cited list">
+
+
+## Changelog
+
+### v1.0.0 (From 2.0.25)
+
+- "Fallback path to Pandoc" doesn't automatically renewed
+- Support relative path for both bib & csl file
+

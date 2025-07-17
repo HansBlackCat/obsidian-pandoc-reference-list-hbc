@@ -1,5 +1,6 @@
 import { FileSystemAdapter, htmlToMarkdown } from 'obsidian';
 import { shellPath } from 'shell-path';
+import which from 'which';
 
 export function getVaultRoot() {
   const adapter = app.vault.adapter;
@@ -10,6 +11,16 @@ export function getVaultRoot() {
 
   // This is a desktop only plugin, so assume adapter is FileSystemAdapter
   // return (app.vault.adapter as FileSystemAdapter).getBasePath();
+}
+
+export async function getPandocPath() {
+    let whichPandoc: string | null = null;
+    try {
+        whichPandoc = await which('pandoc');
+    } catch (e) {
+            throw new Error(`Error finding pandoc. Please set the path manually in the plugin settings.\n${e.message}`);
+    }
+    return whichPandoc;
 }
 
 export function copyElToClipboard(el: HTMLElement) {

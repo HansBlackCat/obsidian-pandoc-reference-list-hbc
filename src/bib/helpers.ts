@@ -5,7 +5,6 @@ import https from 'https';
 import download from 'download';
 import { request } from 'http';
 import { CSLList, PartialCSLEntry } from './types';
-import { getVaultRoot } from 'src/helpers';
 
 export const DEFAULT_ZOTERO_PORT = '23119';
 
@@ -124,6 +123,11 @@ export async function getCSLStyle(
 ) {
   if (explicitPath) {
     let cslPath = explicitPath;
+    const cslBaseName = path.basename(cslPath);
+    if (styleCache.has(cslBaseName)) {
+      return styleCache.get(cslBaseName);
+    }
+
     if (!fs.existsSync(explicitPath)) {
       if (getVaultRoot) {
         cslPath = path.join(getVaultRoot(), explicitPath);
@@ -137,11 +141,6 @@ export async function getCSLStyle(
             `Error: retrieving citation style; Cannot find file '${explicitPath}'.`
         );
       }
-    }
-
-    const cslBaseName = path.basename(cslPath);
-    if (styleCache.has(cslBaseName)) {
-      return styleCache.get(cslBaseName);
     }
 
     const styleData = fs.readFileSync(cslPath).toString();

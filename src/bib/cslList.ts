@@ -6172,6 +6172,12 @@ export const cslListRaw = [
       'https://raw.githubusercontent.com/citation-style-language/styles/master/ieee.csl',
   },
   {
+    label: 'IEEE (Custom)',
+    id: 'ieee-custom',
+    value:
+      'https://raw.githubusercontent.com/HansBlackCat/meta/master/ieee-custom.csl',
+  },
+  {
     label: 'iForest',
     id: 'iforest',
     value:

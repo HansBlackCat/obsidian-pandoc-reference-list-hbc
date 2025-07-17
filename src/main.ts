@@ -81,14 +81,28 @@ export default class ReferenceList extends Plugin {
 
     // No need to block execution
     fixPath().then(async () => {
+      let whichPandoc: string | null = null;
+      try {
+        whichPandoc = await which('pandoc');
+        this.settings.pathToPandoc = whichPandoc;
+        this.saveSettingsOnly();
+      } catch (e) {
+        if (this.settings.pathToPandoc) {
+          whichPandoc = this.settings.pathToPandoc;
+        } else {
+          throw new Error("Error finding pandoc. Please set the path manually in the plugin settings.");
+        }
+      }
+
       if (!this.settings.pathToPandoc) {
         try {
           // Attempt to find if/where pandoc is located on the user's machine
           const pathToPandoc = await which('pandoc');
           this.settings.pathToPandoc = pathToPandoc;
-          this.saveSettings();
+          this.saveSettingsOnly();
         } catch {
           // We can ignore any errors here
+          throw new Error("Error finding pandoc. Please set the path manually in the plugin settings.");
         }
       }
 
@@ -301,6 +315,11 @@ export default class ReferenceList extends Plugin {
     );
 
     // Refresh the reference list when settings change
+    this.emitSettingsUpdate(cb);
+    await this.saveData(this.settings);
+  }
+
+  async saveSettingsOnly(cb?: () => void) {
     this.emitSettingsUpdate(cb);
     await this.saveData(this.settings);
   }
